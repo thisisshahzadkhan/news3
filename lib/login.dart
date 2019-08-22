@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
+import 'auth.dart';
 class mylogin extends StatefulWidget{
   String email,password;
   loginState createState()=> loginState();
@@ -128,7 +129,7 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
                   color: Color(0xff4268D3),
                   elevation: 7.0,
                   child: MaterialButton(
-                    onPressed:() {},
+                    onPressed:() {_login(email, password);},
                     child: Center(
                       child: Text('SIGN IN', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),
                       ),
@@ -185,20 +186,26 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
   );
   }
   _login(var email,var password) async{
-    await http.post('https://newshunt.io/mobile/newsHunt_login.php',body: {'username':email,'password':password})
+   var request = await http.post('https://newshunt.io/mobile/newsHunt_login.php',body: {'username':email,'password':password})
         .then((response){
-        if("${response.body}".contains("notactivated")){
+      String body = response.body;
+
+      if("${response.body}".contains("notactivated")){
           Toast.show('Your Account Is Not Activated Yet, Check Your Email !', context);
           }
-        else if("${response.body}".contains("Not Found")){
+        else if(body.contains("Not Found")){
           Toast.show('Not Found !', context);
           }
-        else if("${response.body}".contains("successful")){
+        else if("${response.body}".contains("id")){
           setState(() {
-            print("osho");
+            print("${response.body}");
+            auth.login=true;
+            //auth.name=
           });
         }
-    }).catchError((error){print('sdfafsd');});
+        //print("${response.body.}");
+    }).catchError((error){print('Error');});
+    //print(await http.get(request));
   }
  /*_facebook_login() async{
     print('fjashfjkashf');

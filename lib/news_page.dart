@@ -271,7 +271,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
   _cold_async(var id,var index)async{
     await http.post('https://newshunt.io/mobile/insert_colds.php', body:{'news_id':id})
         .then((response) {
-      if("${response.body}".contains("You Already Added To It !")){
+      if("${response.body}".contains("exist")){
         setState(() {
           widget.cold_array[index]-=1;
         });
@@ -290,7 +290,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     //https://newshunt.io/mobile/insert_hots.php
     await http.post('https://newshunt.io/mobile/insert_hots.php', body:{'news_id':id})
         .then((response) {
-      if("${response.body}".contains("You Already Added To It !")){
+      if("${response.body}".contains("exist")){
         setState(() {widget.hot_array[index]-=1;});
         Toast.show('You Already Added To It !', context);
       }
