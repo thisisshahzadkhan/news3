@@ -372,6 +372,7 @@ class news_data {
 
 }
 
+
 //clipper
 class DialogonalClipper extends CustomClipper<Path> {
   @override
