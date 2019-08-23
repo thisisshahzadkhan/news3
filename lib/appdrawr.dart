@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
-import 'signout.dart';
+import 'package:toast/toast.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 class appdrawr extends StatefulWidget{
   appdrawr_state createState()=>appdrawr_state();
 }
@@ -83,10 +85,18 @@ class appdrawr_state extends State<appdrawr>{
           
           ////Sign out
 
-          ListTile(onTap: (){signOut();},title: Visibility(visible: auth.login,child: Text("Sign out!",textAlign: TextAlign.center,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),)),)
+          ListTile(onTap: (){_signOut();},title: Visibility(visible: auth.login,child: Text("Sign out!",textAlign: TextAlign.center,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),)),)
         ],
       ),
     );
+  }
+  _signOut()async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        sharedPreferences.remove('oauth_uid');
+        sharedPreferences.remove('oauth_provider');
+        sharedPreferences.remove('name');
+        Toast.show("Signed out!", context);
+        Navigator.pushReplacementNamed(context, '/home');
   }
 
 }

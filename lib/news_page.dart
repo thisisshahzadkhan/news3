@@ -93,6 +93,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     String oauth_provider=prefs.getString('oauth_provider');
     String name=prefs.getString('name');
     if (oauth_uid==null||oauth_provider==null||name==null){
+      print('signed out');
       auth.login=false;
       auth.oauth_uid=null;
       auth.oauth_provider=null;

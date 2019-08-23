@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'news_page.dart' as news_page;
 import 'language.dart';
 import 'bottomNavigation.dart';
-import 'englishInternationalgrid.dart';
-import 'urdunewsgrid.dart';
 import 'floating_button.dart';
 import 'auth.dart';
 import 'appdrawr.dart';
