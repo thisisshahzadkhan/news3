@@ -216,10 +216,10 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                                   _cold_async(snapshot.data[widget.Index].id,widget.Index);}, iconSize: 50,),
                                 Text(widget.cold_array[widget.Index].toString(),style: TextStyle(fontFamily: 'Montserrat'))
                               ],),
-                              ///////////////////////bookmarks
+                              ///////////////////////archives
                               Column(children: <Widget>[
                                 IconButton(icon: Image.asset(widget.archivesicon),
-                                  onPressed: null, iconSize: 50,),
+                                  onPressed:(){_archive(snapshot.data[widget.Index].id);} , iconSize: 50,),
                                 Text('Archive',style: TextStyle(fontFamily: 'Montserrat'))
                               ],),
                               ///////////////////////share
@@ -281,6 +281,22 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
       ),
     );
 
+  }
+
+  //////////////////////////////archive
+  _archive(var news_id)async{
+    if(auth.login){
+    http.post('https://newshunt.io/mobile/set_archieves.php',body: {'oauth_provider':auth.oauth_provider,'oauth_uid':auth.oauth_uid,'news_id':news_id})
+        .then((response){
+          print('${response.body}');
+          Toast.show('${response.body}', context);
+        }).catchError((error){
+          print(error);
+    });
+    }
+    else{
+      Toast.show("Please login to set archives", context,duration: Toast.LENGTH_LONG);
+    }
   }
 
   /////////////////////////////////////SHARE
