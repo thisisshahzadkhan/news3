@@ -6,6 +6,7 @@ import 'englishInternationalgrid.dart';
 import 'urdunewsgrid.dart';
 import 'floating_button.dart';
 import 'auth.dart';
+import 'appdrawr.dart';
 class archives extends StatefulWidget{
   Text text=Text("");
   archives_state  createState()=> archives_state();
@@ -67,6 +68,7 @@ class archives_state extends State<archives>{
 
     }
     return Scaffold(
+      endDrawer: appdrawr(),
         appBar: AppBar(
           centerTitle: true,
           title: Text('Archives',style: TextStyle(color: Colors.black),),

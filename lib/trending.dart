@@ -5,6 +5,7 @@ import 'urdunewsgrid.dart';
 import 'englishInternationalgrid.dart';
 import 'bottomNavigation.dart';
 import 'floating_button.dart';
+import 'appdrawr.dart';
 class trending extends StatefulWidget{
 
   home_state  createState()=> home_state();
@@ -27,6 +28,7 @@ class home_state extends State<trending>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        endDrawer: appdrawr(),
       //endDrawer: (language.lang=="Urdu")?drawer_urdu():drawer(),
         appBar: AppBar(
           centerTitle: true,
