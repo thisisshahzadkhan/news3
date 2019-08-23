@@ -5,6 +5,7 @@ import 'bottomNavigation.dart';
 import 'englishInternationalgrid.dart';
 import 'urdunewsgrid.dart';
 import 'floating_button.dart';
+import 'auth.dart';
 class archives extends StatefulWidget{
   Text text=Text("");
   archives_state  createState()=> archives_state();
@@ -27,7 +28,7 @@ class archives_state extends State<archives>{
 
   @override
   Widget build(BuildContext context) {
-    if(true){
+    if(!auth.login){
       return Scaffold(
         //endDrawer: (language.lang=="Urdu")?drawer_urdu():drawer(),
         appBar: AppBar(
@@ -71,6 +72,7 @@ class archives_state extends State<archives>{
           title: Text('Archives',style: TextStyle(color: Colors.black),),
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
+
           /*actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search,color: Colors.black),

@@ -5,11 +5,11 @@ import 'dart:convert';
 import 'package:toast/toast.dart';
 
 import 'package:flutter_html/flutter_html.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/animation.dart';
 import 'package:share/share.dart';
 import 'language.dart';
-
+import 'auth.dart';
 
 class news_page extends StatefulWidget{
   var x;
@@ -86,6 +86,32 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     animation=Tween(begin: -0.1,end: 0.0).animate(CurvedAnimation(parent: animationControler, curve: Curves.fastOutSlowIn));
     animationControler.forward();
   }*/
+///////////auth check
+  _sharedPreferences ()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String oauth_uid=prefs.getString('oauth_uid');
+    String oauth_provider=prefs.getString('oauth_provider');
+    String name=prefs.getString('name');
+    if (oauth_uid==null||oauth_provider==null||name==null){
+      auth.login=false;
+      auth.oauth_uid=null;
+      auth.oauth_provider=null;
+      auth.name=null;
+    }
+    else{
+      print('auth is set');
+      auth.login=true;
+      auth.oauth_uid=oauth_uid;
+      auth.oauth_provider=oauth_provider;
+      auth.name=name;
+    }
+  }
+
+  @override
+  void initState() {
+    _sharedPreferences();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

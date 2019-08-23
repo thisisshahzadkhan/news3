@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 import 'auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 class mylogin extends StatefulWidget{
   String email,password;
   loginState createState()=> loginState();
@@ -185,8 +189,17 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
     ),
   );
   }
+
+  ////////////Shared preferences
+  _sharedPreferences (String oauth_uid,String oauth_provider,String fname,String lname)async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('oauth_uid',oauth_uid);
+    prefs.setString('oauth_provider',oauth_provider);
+    prefs.setString('name',fname+" "+lname);
+  }
+  ///////////login
   _login(var email,var password) async{
-   var request = await http.post('https://newshunt.io/mobile/newsHunt_login.php',body: {'username':email,'password':password})
+   await http.post('https://newshunt.io/mobile/newsHunt_login.php',body: {'username':email,'password':password})
         .then((response){
       String body = response.body;
 
@@ -197,15 +210,19 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
           Toast.show('Not Found !', context);
           }
         else if("${response.body}".contains("id")){
-          setState(() {
-            print("${response.body}");
-            auth.login=true;
-            //auth.name=
-          });
+        Toast.show('Welcome !', context,duration: Toast.LENGTH_LONG);
+        print("${response.body}");
+            var resp_json = json.decode("${response.body}");
+            print(resp_json[0]['id'].toString());
+            _sharedPreferences(resp_json[0]['oauth_uid'].toString(),
+                resp_json[0]['oauth_provider'].toString(),
+                resp_json[0]['fname'].toString(),
+                resp_json[0]['lname'].toString()
+            );
+            Navigator.pushReplacementNamed(context, '/home');
         }
-        //print("${response.body.}");
+
     }).catchError((error){print('Error');});
-    //print(await http.get(request));
   }
  /*_facebook_login() async{
     print('fjashfjkashf');

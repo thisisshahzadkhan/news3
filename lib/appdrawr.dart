@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'auth.dart';
+import 'signout.dart';
 class appdrawr extends StatefulWidget{
   appdrawr_state createState()=>appdrawr_state();
 }
@@ -13,8 +14,8 @@ class appdrawr_state extends State<appdrawr>{
           ///header
           DrawerHeader(child: Image.asset('assets/icon.png',),decoration:BoxDecoration(color: Colors.grey),padding: EdgeInsets.only(top: 30),),
           ///////////signin // signup
-          ListTile(title: Text('Sign In / Sign Up',textAlign: TextAlign.center,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),),
-            onTap: (){Navigator.pushNamed(context, '/login');},),
+          ListTile(title: Text((auth.login)?auth.name:'Sign In / Sign Up',textAlign: TextAlign.center,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),textScaleFactor: 1.5,),
+            onTap: (){auth.login?{}:Navigator.pushNamed(context, '/login');},),
           ///////////Contact us
           ListTile(title: Text('Contact Us',textAlign: TextAlign.center,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),),
             onTap: (){showDialog(context: context,
@@ -79,6 +80,10 @@ class appdrawr_state extends State<appdrawr>{
                   ,textAlign: TextAlign.start,style: TextStyle(fontFamily: 'Montserrat'),),
                 )
             );},),
+          
+          ////Sign out
+
+          ListTile(onTap: (){signOut();},title: Visibility(visible: auth.login,child: Text("Sign out!",textAlign: TextAlign.center,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),)),)
         ],
       ),
     );
