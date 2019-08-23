@@ -86,8 +86,8 @@ class archives_state extends State<archives>{
               labelColor: Color(0xff4268D3),
               controller: tabController,
               tabs:[
-                new Tab(text: 'Accenging'),
-                new Tab(text: 'Decending'),
+                new Tab(text: 'Newest'),
+                new Tab(text: 'Oldest'),
               ]
           ),
         ),
@@ -95,8 +95,8 @@ class archives_state extends State<archives>{
             physics: NeverScrollableScrollPhysics(),
             controller: tabController,
             children: <Widget>[
-              new news_page.news_page('http://newshunt.io/mobile/get_latest.php'),
-              new news_page.news_page('http://newshunt.io/mobile/get_latest.php?category=national'),
+              new news_page.news_page('https://newshunt.io/mobile/get_archieves.php?order=DESC&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider),
+              new news_page.news_page('https://newshunt.io/mobile/get_archieves.php?order=ASC&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider),
             ]),
 
 ///////////////////////////FAB

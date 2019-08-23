@@ -114,6 +114,8 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     super.initState();
   }
 
+  var limit=49;
+
   @override
   Widget build(BuildContext context) {
     setState(() {});
@@ -133,7 +135,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                 }
               }
               else if (d.primaryVelocity <= -1) {
-                if (widget.Index < 49) {widget.Index++;}
+                if (widget.Index < limit) {widget.Index++;}
                 else{
                   Toast.show("No more news available for now!", context);
                 }
@@ -156,15 +158,12 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                     ));
                   }
                   else {
-                    print(snapshot.data.length);
+                    limit=snapshot.data.length-1;
+                    print(limit);
+
                     //////////////////CHECKING SOURCE and SETTING LOGO
                     check_source(snapshot.data[widget.Index].source.toString());
-                    //////////////////// setting COLDs
-                    //widget.cold_array[widget.Index]=int.parse(snapshot.data[widget.Index].colds);
                     widget.cold_array.add(int.parse(snapshot.data[widget.Index].colds));
-                    //////////////////////setting HOTs
-                    //widget.swipe_opacity=0.0;
-                    //widget.hot_array[widget.Index]=int.parse(snapshot.data[widget.Index].hots);
                     widget.hot_array.add(int.parse(snapshot.data[widget.Index].hots));
                     //////////////////////check category
                     check_category(snapshot.data[widget.Index].category.toString());
