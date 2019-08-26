@@ -11,7 +11,7 @@ class filter_state extends State<filter>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //appBar: AppBar(title: Text('Filters',style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,centerTitle: true,),
+      appBar: AppBar(title: Text('Filters',style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,centerTitle: true,),
       body: Container(
         decoration: BoxDecoration(color: Color(0xfff7f7f7)),
         padding: EdgeInsets.all(10),
@@ -21,8 +21,8 @@ class filter_state extends State<filter>{
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              SizedBox(height: 15,),
-              Text("Filters",textScaleFactor: 3,textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),),
+              //SizedBox(height: 15,),
+              //Text("Filters",textScaleFactor: 3,textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),),
               SizedBox(height: 15,),
               Card(
                 color: Color.fromRGBO(255, 255, 255, .6),

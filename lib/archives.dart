@@ -29,7 +29,6 @@ class archives_state extends State<archives>{
   Widget build(BuildContext context) {
     if(!auth.login){
       return Scaffold(
-        //endDrawer: (language.lang=="Urdu")?drawer_urdu():drawer(),
         appBar: AppBar(
           centerTitle: true,
           title: Text('Archives',style: TextStyle(color: Colors.black),),

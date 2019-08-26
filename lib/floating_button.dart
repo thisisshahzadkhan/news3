@@ -4,6 +4,7 @@ import 'language.dart';
 import 'urdunewsgrid.dart';
 import 'englishInternationalgrid.dart';
 import 'englishRegionalgrid.dart';
+import 'auth.dart';
 class floating_button extends StatefulWidget {
   bool international = true;
   floating_button_state createState()=>floating_button_state();
@@ -89,14 +90,45 @@ class floating_button_state extends State<floating_button>{
             decoration: BoxDecoration(
                 boxShadow: [BoxShadow(color: Colors.grey,spreadRadius: 5,blurRadius: 5,offset: Offset(5.0, 5.0))]),
             child: InkWell(
-              onTap: (){Navigator.pushNamed(context, '/filter');},
+              onTap: (){
+                if(auth.login)
+                  Navigator.pushNamed(context, '/filter');
+                else{
+                  showDialog(context: context,
+                      builder: (context)=>AlertDialog(
+                        title: Text('Access Denied',style: TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Montserrat')),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                          Text("In order to access filters you have to sign in first!"
+                            ,textAlign: TextAlign.start,style: TextStyle(fontFamily: 'Montserrat')),
+                            SizedBox(height: 10,),
+                              //////////SIGN IN/Signup
+                              Material(
+                                borderRadius: BorderRadius.circular(20.0),
+                                shadowColor: Colors.blue,
+                                color: Color(0xff4268D3),
+                                elevation: 7.0,
+                                child: MaterialButton(
+                                  onPressed:() {Navigator.pushNamed(context, '/login');},
+                                  child: Center(
+                                    child: Text('SIGN IN / SIGN UP', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+
+                        ],),
+                      )
+                  );
+                }
+                },
               //onTap: (){_showDrawer();},
                 child: Image.asset("assets/filters2.png",scale: 10,)),
           ),
         ),
       ),backgroundColor: Color(0xffffff),);
   }
-
-
 
 }

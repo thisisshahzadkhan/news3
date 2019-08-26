@@ -28,6 +28,7 @@ dependencies:
   share: 0.5.3
   flutter_html: 0.10.4
   toast: 0.1.5
+  flutter_facebook_login: 2.0.1
 
 
 dev_dependencies:
