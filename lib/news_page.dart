@@ -17,7 +17,8 @@ class news_page extends StatefulWidget{
   var url="";
   var coldicon='assets/uncold.png';
   var hoticon='assets/unhot.png';
-  var archivesicon='assets/unarchive.png';
+  var archivesicon='assets/archive.png';
+  var archivesUnseticon='assets/unarchive.png';
   var cold_array=[];
   //List<int> cold_array=[14];
   var hot_array=[];
@@ -119,7 +120,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
   @override
   Widget build(BuildContext context) {
     setState(() {});
-    final double width=MediaQuery.of(context).size.width;
+    //final double width=MediaQuery.of(context).size.width;
         return Scaffold(
           //body
       body:GestureDetector(
@@ -163,7 +164,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                     }
                     limit=snapshot.data.length-1;
                     print(limit);
-
+                    print(snapshot.data[0].archives);
                     //////////////////CHECKING SOURCE and SETTING LOGO
                     check_source(snapshot.data[widget.Index].source.toString());
                     widget.cold_array.add(int.parse(snapshot.data[widget.Index].colds));
@@ -187,7 +188,8 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                           ///////////////MAIN NEWS IMAGE
                           flexibleSpace: FlexibleSpaceBar(
                             background: Image.network(
-                              snapshot.data[widget.Index].media,
+                              (snapshot.data[widget.Index].media==null)?'':snapshot.data[widget.Index].media,
+
                               fit: BoxFit.cover,),
                           ),
                         ),
@@ -221,7 +223,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                               ],),
                               ///////////////////////archives
                               Column(children: <Widget>[
-                                IconButton(icon: Image.asset(widget.archivesicon),
+                                IconButton(icon: Image.asset((snapshot.data[widget.Index].archives==null||snapshot.data[widget.Index].archives=='0')?widget.archivesUnseticon:widget.archivesicon),
                                   onPressed:(){_archive(snapshot.data[widget.Index].id);} , iconSize: 50,),
                                 Text('Archive',style: TextStyle(fontFamily: 'Montserrat'))
                               ],),
@@ -292,7 +294,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     http.post('https://newshunt.io/mobile/set_archieves.php',body: {'oauth_provider':auth.oauth_provider,'oauth_uid':auth.oauth_uid,'news_id':news_id})
         .then((response){
           print('${response.body}');
-          Toast.show('${response.body}', context);
+          Toast.show('${response.body}'+'.\nData will be updated shortly', context,duration: Toast.LENGTH_LONG);
         }).catchError((error){
           print(error);
     });
@@ -354,13 +356,16 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
 
   //FUTURE / ASYNC DATA CALL
   Future<List<news_data>> _news_data () async{
-    var data= await http.get(widget.url);
+    /*if(auth.login){
+      widget.url+'&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider;
+    }*/
+    var data= await http.get(widget.url+((auth.login)?('&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider):""));
     print(widget.url);
      var json_data=json.decode(data.body);
      List<news_data> news_data_list=[];
      for (var n in json_data){
         news_data data=news_data(n["id"],n['title'], n['body'],n['media'],n['url'],n['pub_date'],
-            n['source'],n['category'],n['hots'],n['colds']);
+            n['source'],n['category'],n['hots'],n['colds'],n['archieves']);
         news_data_list.add(data);
      }
      return news_data_list;
@@ -369,9 +374,9 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
 }
 // DAta Templet
 class news_data {
-  var id, title, body, media, url, pub_date, source, category,hots,colds;
+  var id, title, body, media, url, pub_date, source, category,hots,colds,archives;
   news_data(this.id, this.title,this.body,this.media, this.url, this.pub_date,
-       this.source, this.category,this.hots,this.colds);
+       this.source, this.category,this.hots,this.colds,this.archives);
 
 }
 

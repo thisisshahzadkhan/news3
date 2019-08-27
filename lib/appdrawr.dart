@@ -29,31 +29,31 @@ class appdrawr_state extends State<appdrawr>{
                       shrinkWrap: true,
                       children: <Widget>[
                         /////////////////////name
-                        TextField(//onChanged: (input){email=input;},
+                        TextField(onChanged: (input){name=input;},
                           decoration: InputDecoration(
                               hintText: "Name", labelText: "Name", labelStyle: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold, color: Colors.grey),
                               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0,20.0, 10.0), border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),),
                         SizedBox(height: 10),
                         /////////////////////email
-                        TextField(//onChanged: (input){email=input;},
+                        TextField(onChanged: (input){email=input;},
                           decoration: InputDecoration(
                               hintText: "Email", labelText: "Email", labelStyle: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold, color: Colors.grey),
                               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0,20.0, 10.0), border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),),
                         SizedBox(height: 10),
                         /////////////////////name
-                        TextField(//onChanged: (input){email=input;},
+                        TextField(onChanged: (input){subject=input;},
                           decoration: InputDecoration(
                               hintText: "Subject", labelText: "Subject", labelStyle: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold, color: Colors.grey),
                               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0,20.0, 10.0), border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),),
                         SizedBox(height: 10),
                         /////////////////////name
-                        TextField(//onChanged: (input){email=input;},
+                        TextField(onChanged: (input){phone=input;},
                           decoration: InputDecoration(
                               hintText: "Phone", labelText: "Phone", labelStyle: TextStyle(fontFamily: 'Montserrat', fontWeight: FontWeight.bold, color: Colors.grey),
                               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0,20.0, 10.0), border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),),
                         SizedBox(height: 10),
                         /////////review
-                        TextField(//onChanged: (input){email=input;},
+                        TextField(onChanged: (input){review=input;},
                           maxLines: null,
                           keyboardType: TextInputType.multiline,
                           decoration: InputDecoration(
@@ -63,7 +63,7 @@ class appdrawr_state extends State<appdrawr>{
                         ///////////////Submit
                         Material(borderRadius: BorderRadius.circular(20.0), shadowColor: Colors.blue, color: Color(0xff4268D3), elevation: 7.0,
                           child: MaterialButton(onPressed:() {
-                              //_forget_request(email);
+                              _contactUs(name,email,subject,phone,review);
                               Navigator.pop(context);},
                             child: Center(
                               child: Text('Submit', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),
@@ -90,6 +90,15 @@ class appdrawr_state extends State<appdrawr>{
       ),
     );
   }
+
+  _contactUs(var name,var email, var subject, var phone,var review){
+    print(name);
+    print(email);
+    print(subject);
+    print(phone);
+    print(review);
+  }
+
   _signOut()async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         sharedPreferences.remove('oauth_uid');
