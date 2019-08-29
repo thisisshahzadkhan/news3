@@ -1,6 +1,6 @@
 class auth {
   static bool login = true;
-  static var name ;
-  static var oauth_provider;
-  static var oauth_uid;
+  static String name ;
+  static String oauth_provider;
+  static String oauth_uid;
 }

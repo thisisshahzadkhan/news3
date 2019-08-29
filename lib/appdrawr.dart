@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'auth.dart';
 import 'package:toast/toast.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class appdrawr extends StatefulWidget{
   appdrawr_state createState()=>appdrawr_state();
@@ -63,8 +63,9 @@ class appdrawr_state extends State<appdrawr>{
                         ///////////////Submit
                         Material(borderRadius: BorderRadius.circular(20.0), shadowColor: Colors.blue, color: Color(0xff4268D3), elevation: 7.0,
                           child: MaterialButton(onPressed:() {
-                              _contactUs(name,email,subject,phone,review);
-                              Navigator.pop(context);},
+                              if(_contactUs(name,email,subject,phone,review))
+                              Navigator.pop(context);
+                              },
                             child: Center(
                               child: Text('Submit', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),
                               ),),),)
@@ -91,12 +92,20 @@ class appdrawr_state extends State<appdrawr>{
     );
   }
 
-  _contactUs(var name,var email, var subject, var phone,var review){
-    print(name);
-    print(email);
-    print(subject);
-    print(phone);
-    print(review);
+  bool _contactUs(String name,String email, String subject, String phone,String review){
+    if(name==null||email==null||subject==null||phone==null||review==null){
+      Toast.show("Fill all the required infromation", context);
+      return false;
+    }
+    http.post('https://newshunt.io/mobile/newshunt_contact.php',body: {
+      'name':name,'subject':subject,'email':email,'phone':phone,'body':review
+    })
+        .then((response){
+          Toast.show(response.body.toString(), context);
+    })
+        .catchError((error){Toast.show('Error', context);});
+    //https://newshunt.io/mobile/newshunt_contact.php
+    return true;
   }
 
   _signOut()async{

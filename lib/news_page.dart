@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:toast/toast.dart';
-
+import 'filter_list.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/animation.dart';
@@ -93,6 +93,8 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     String oauth_uid=prefs.getString('oauth_uid');
     String oauth_provider=prefs.getString('oauth_provider');
     String name=prefs.getString('name');
+    List<String> newslist=prefs.getStringList('newsnames');
+
     if (oauth_uid==null||oauth_provider==null||name==null){
       print('signed out');
       auth.login=false;
@@ -102,10 +104,13 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     }
     else{
       print('auth is set');
+      print(oauth_uid);
       auth.login=true;
       auth.oauth_uid=oauth_uid;
       auth.oauth_provider=oauth_provider;
       auth.name=name;
+      if(newslist!=null)
+      filter_list.newsnames=newslist;
     }
   }
 
@@ -359,8 +364,10 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     /*if(auth.login){
       widget.url+'&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider;
     }*/
-    var data= await http.get(widget.url+((auth.login)?('&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider):""));
-    print(widget.url);
+    String x=widget.url+((auth.login)?('&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider):"");
+    print(x);
+    //var data= await http.get(widget.url+((auth.login)?('&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider):""));
+    var data= await http.get(x);
      var json_data=json.decode(data.body);
      List<news_data> news_data_list=[];
      for (var n in json_data){

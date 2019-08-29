@@ -2,12 +2,24 @@ import 'package:flutter/material.dart';
 import 'englishInternationalgrid.dart';
 import 'urdunewsgrid.dart';
 import 'englishRegionalgrid.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'filter_list.dart';
+import 'auth.dart';
+import 'package:toast/toast.dart';
+import 'dart:convert';
 class filter extends StatefulWidget{
     filter_state createState()=>filter_state();
 }
 class filter_state extends State<filter>{
   bool english=true;
   bool international=true;
+
+  @override
+  void initState() {
+    _filterRequest();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +33,6 @@ class filter_state extends State<filter>{
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
-              //SizedBox(height: 15,),
-              //Text("Filters",textScaleFactor: 3,textAlign: TextAlign.center,style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),),
               SizedBox(height: 15,),
               Card(
                 color: Color.fromRGBO(255, 255, 255, .6),
@@ -72,12 +82,61 @@ class filter_state extends State<filter>{
               SizedBox(height:5),
               /////////////////////////grid
               Expanded(child: (english)?(international)?englishInternationalgrid():englishRegionalgrid():urdunewsgrid()),
-              //Expanded(child: englishnewsgrid()),
+              //SizedBox(height: 15,),
+              RaisedButton(color: Colors.blue,onPressed: (){_update();},child: Text('Update!'),),
+
             ],
           ),
         ),
       ),
     );
+
   }
 
+
+  _filterRequest()async{
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    List<String> array;
+    await http.post("https://newshunt.io/mobile/get_user_sources.php",body: {'oauth_uid':auth.oauth_uid})
+        .then((response){
+      //print("${response.body}"+"my responce");
+      array=new List<String>.from(json.decode("${response.body}"));
+      print(array==null);
+        }).catchError((error){print(error);});
+    if(array.length>0)
+      sharedPreferences.setStringList('newsnames', array);
+    setState(() {
+      if(array.length>0)
+        filter_list.newsnames=sharedPreferences.getStringList('newsnames');
+    });
+  }
+
+  _update()async{
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      var x=['the_nation','daily_times','daily_pak'];
+
+      /*for(int i=0;i<filter_list.newsnames.length;i++)
+      {x[i]=filter_list.newsnames[i];}
+      */
+      print(filter_list.newsnames);
+      await http.post('https://newshunt.io/mobile/sources.php',
+        headers: {'content-type': 'application/json'},
+        body: JsonEncoder().convert({
+        "sources":filter_list.newsnames,
+        "oauth_uid":auth.oauth_uid
+      }),
+      ).then((response){
+        Toast.show("Filters updated!", context);
+        print("sdfasjkdlf");
+        print("${response.body}");
+        if("${response.body}".contains("success")){
+          sharedPreferences.setStringList('newsnames', filter_list.newsnames);
+          print("pref updated");
+
+        }
+      }).catchError((error){
+        print(error);
+      });
+
+  }
 }
