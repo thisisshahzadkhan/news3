@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
@@ -142,13 +142,13 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
                 )),
             SizedBox(height: 20.0),
 /////////////////////////////////////////////////FACEBOOK LOGIN BUTTON
-            /*Container(
+            Container(
                 height: 40.0,
                 decoration: BoxDecoration(
                 border: Border.all(color: Colors.black, style: BorderStyle.solid, width: 1.0), color: Colors.transparent, borderRadius: BorderRadius.circular(20.0)),
                 child:MaterialButton(
                     onPressed:() {
-                    //  _facebook_login();
+                     _facebook_login();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -158,7 +158,7 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
                     ],
                     ),
                   ),
-                ),*/
+                ),
             SizedBox(height: 50.0),
  /////////////////////////////////////////////////////REGISTER
             Row(
@@ -224,13 +224,18 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
 
     }).catchError((error){print('Error');});
   }
- /*_facebook_login() async{
-    print('fjashfjkashf');
+ _facebook_login() async{
+    print('facebbbbbbbbb');
     var facebook=FacebookLogin();
     var facebookLoginResult=await facebook.logInWithReadPermissions(['email']);
     switch(facebookLoginResult.status){
       case FacebookLoginStatus.loggedIn:
         print("FB osho");
+        var token = facebookLoginResult.accessToken.token;
+        final fbResponse = await http.get(
+            'https://graph.facebook.com/v2.12/me?fields=first_name,last_name,email&access_token=${token}');
+        var abc=json.decode(fbResponse.body);
+        print(abc);
         break;
       case FacebookLoginStatus.error:
         print("onasho");
@@ -239,7 +244,7 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
         print('canceled bt the user');
         break;
     }
- }*/
+ }
   _forget_request(var email){
     http.post('',body: {'':email}).then((response){
       Toast.show('Your Account Is Not Activated Yet, Check Your Email !', context);

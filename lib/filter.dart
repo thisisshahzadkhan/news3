@@ -14,7 +14,7 @@ class filter extends StatefulWidget{
 class filter_state extends State<filter>{
   bool english=true;
   bool international=true;
-
+  bool filter_set=false;
   @override
   void initState() {
     _filterRequest();
@@ -24,7 +24,7 @@ class filter_state extends State<filter>{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Filters',style: TextStyle(color: Colors.black),),backgroundColor: Colors.white,centerTitle: true,),
-      body: Container(
+      body: filter_set?Container(
         decoration: BoxDecoration(color: Color(0xfff7f7f7)),
         padding: EdgeInsets.all(10),
         child: Center(
@@ -84,11 +84,12 @@ class filter_state extends State<filter>{
               Expanded(child: (english)?(international)?englishInternationalgrid():englishRegionalgrid():urdunewsgrid()),
               //SizedBox(height: 15,),
               RaisedButton(color: Colors.blue,onPressed: (){_update();},child: Text('Update!'),),
-
             ],
           ),
         ),
-      ),
+      ):Container(child: Center(
+    child: CircularProgressIndicator(),
+    )),
     );
 
   }
@@ -108,6 +109,8 @@ class filter_state extends State<filter>{
     setState(() {
       if(array.length>0)
         filter_list.newsnames=sharedPreferences.getStringList('newsnames');
+
+      filter_set=true;
     });
   }
 
@@ -115,9 +118,6 @@ class filter_state extends State<filter>{
       SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
       var x=['the_nation','daily_times','daily_pak'];
 
-      /*for(int i=0;i<filter_list.newsnames.length;i++)
-      {x[i]=filter_list.newsnames[i];}
-      */
       print(filter_list.newsnames);
       await http.post('https://newshunt.io/mobile/sources.php',
         headers: {'content-type': 'application/json'},
@@ -127,12 +127,11 @@ class filter_state extends State<filter>{
       }),
       ).then((response){
         Toast.show("Filters updated!", context);
-        print("sdfasjkdlf");
         print("${response.body}");
         if("${response.body}".contains("success")){
           sharedPreferences.setStringList('newsnames', filter_list.newsnames);
           print("pref updated");
-
+          Navigator.pop(context);
         }
       }).catchError((error){
         print(error);

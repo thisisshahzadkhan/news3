@@ -14,6 +14,7 @@ import 'auth.dart';
 class news_page extends StatefulWidget{
   var x;
   int Index=0;
+  bool stateNotSet=true;
   var url="";
   var coldicon='assets/uncold.png';
   var hoticon='assets/unhot.png';
@@ -79,14 +80,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
       case 'Life & Style':widget.category_image='assets/catstyle.png';break;
       }
   }
-  /////////////////////InitState
-  /*@override
-  void initState() {
-    super.initState();
-    animationControler=AnimationController(duration:Duration(seconds: 2),vsync: this);
-    animation=Tween(begin: -0.1,end: 0.0).animate(CurvedAnimation(parent: animationControler, curve: Curves.fastOutSlowIn));
-    animationControler.forward();
-  }*/
+
 ///////////auth check
   _sharedPreferences ()async{
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -114,9 +108,16 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     }
   }
 
+  _updateState(){
+      if(widget.stateNotSet){
+        setState(() {});
+      }
+  }
+
   @override
   void initState() {
     _sharedPreferences();
+    //_updateState();
     super.initState();
   }
 
@@ -159,11 +160,13 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                 future: _news_data(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.data == null||snapshot.hasError||snapshot.hasData!=true) {
+
                     return Container(child: Center(
                               child: CircularProgressIndicator(),
                     ));
                   }
                   else {
+                    widget.stateNotSet=false;
                     if(snapshot.data.length==0){
                       return Center(child: Text("No news found!!"),);
                     }
@@ -361,10 +364,12 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
 
   //FUTURE / ASYNC DATA CALL
   Future<List<news_data>> _news_data () async{
-    /*if(auth.login){
-      widget.url+'&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider;
-    }*/
-    String x=widget.url+((auth.login)?('&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider):"");
+    String x;
+    if (auth.login) {
+      x=widget.url+"&oauth_uid="+auth.oauth_uid+"&oauth_provider="+auth.oauth_provider;
+    }else x=widget.url;
+
+    //x=widget.url+((auth.login)?('&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider):"");
     print(x);
     //var data= await http.get(widget.url+((auth.login)?('&oauth_uid='+auth.oauth_uid+'&oauth_provider='+auth.oauth_provider):""));
     var data= await http.get(x);

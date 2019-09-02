@@ -110,7 +110,10 @@ class floating_button_state extends State<floating_button>{
                                 color: Color(0xff4268D3),
                                 elevation: 7.0,
                                 child: MaterialButton(
-                                  onPressed:() {Navigator.pushNamed(context, '/login');},
+                                  onPressed:() {
+                                    if(Navigator.canPop(context))
+                                      Navigator.pop(context);
+                                    Navigator.pushNamed(context, '/login');},
                                   child: Center(
                                     child: Text('SIGN IN / SIGN UP', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),
                                     ),

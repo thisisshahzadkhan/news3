@@ -58,7 +58,7 @@
                       Replace "000000000000" with your Facebook App ID here.
                       **NOTE**: The scheme needs to start with `fb` and then your ID.
                     -->
-                    <string>fb000000000000</string>
+                    <string>fb2448965981854875</string>
                 </array>
             </dict>
         </array>
@@ -66,11 +66,11 @@
         <key>FacebookAppID</key>
 
         <!-- Replace "000000000000" with your Facebook App ID here. -->
-        <string>000000000000</string>
+        <string>2448965981854875</string>
         <key>FacebookDisplayName</key>
 
         <!-- Replace "YOUR_APP_NAME" with your Facebook App name. -->
-        <string>YOUR_APP_NAME</string>
+        <string>phonesignin</string>
 
         <key>LSApplicationQueriesSchemes</key>
         <array>
