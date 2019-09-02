@@ -234,8 +234,16 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
         var token = facebookLoginResult.accessToken.token;
         final fbResponse = await http.get(
             'https://graph.facebook.com/v2.12/me?fields=first_name,last_name,email&access_token=${token}');
-        var abc=json.decode(fbResponse.body);
-        print(abc);
+        var fbData=json.decode(fbResponse.body);
+        print(fbData);
+        http.post('',
+            headers: {'content-type': 'application/json'},body: fbData)
+            .then((response){
+              if(response.body.contains('success')){
+                _sharedPreferences(fbData['id'], 'facebook', fbData['first_name'], fbData['last_name']);
+                Navigator.pushReplacementNamed(context, '/home');
+              }
+        }).catchError((e){print(e);});
         break;
       case FacebookLoginStatus.error:
         print("onasho");
