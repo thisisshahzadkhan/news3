@@ -273,7 +273,7 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
     }
  }
   _forget_request(var email){
-    http.post('',body: {'email':email}).then((response){
+    http.post('https://newshunt.io/mobile/pass_forget.php',body: {'email':email}).then((response){
       Toast.show('Check Your Email !', context);
     });
   }
