@@ -113,7 +113,7 @@ class floating_button_state extends State<floating_button>{
                                   onPressed:() {
                                     if(Navigator.canPop(context))
                                       Navigator.pop(context);
-                                    Navigator.pushNamed(context, '/login');},
+                                    Navigator.pushReplacementNamed(context, '/login');},
                                   child: Center(
                                     child: Text('SIGN IN / SIGN UP', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),
                                     ),

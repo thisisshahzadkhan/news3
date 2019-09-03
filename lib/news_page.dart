@@ -159,20 +159,18 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                               child: FutureBuilder(
                 future: _news_data(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if (snapshot.data == null||snapshot.hasError||snapshot.hasData!=true) {
-
+                  while (snapshot.data == null||snapshot.hasError) {
                     return Container(child: Center(
                               child: CircularProgressIndicator(),
                     ));
                   }
-                  else {
-                    widget.stateNotSet=false;
+                  {
+                    //widget.stateNotSet=false;
                     if(snapshot.data.length==0){
                       return Center(child: Text("No news found!!"),);
                     }
                     limit=snapshot.data.length-1;
                     print(limit);
-                    print(snapshot.data[0].archives);
                     //////////////////CHECKING SOURCE and SETTING LOGO
                     check_source(snapshot.data[widget.Index].source.toString());
                     widget.cold_array.add(int.parse(snapshot.data[widget.Index].colds));

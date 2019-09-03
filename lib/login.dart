@@ -13,11 +13,20 @@ class mylogin extends StatefulWidget{
 }
 class loginState extends State<mylogin>with TickerProviderStateMixin {
   var email,password;
+  bool loading=false;
+
+  @override
+  void initState() {
+    loading=false;
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
     backgroundColor: Colors.white,
-    body: Container(
+    body: Stack(children: <Widget>[Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
@@ -187,6 +196,14 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
           ],
         ),
     ),
+    Visibility(
+      visible: loading,
+      child: Container(child: Center(
+      child: CircularProgressIndicator(),
+    )),)
+    ],
+
+    )
   );
   }
 
@@ -199,7 +216,8 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
   }
   ///////////login
   _login(var email,var password) async{
-   await http.post('https://newshunt.io/mobile/newsHunt_login.php',body: {'username':email,'password':password})
+    setState(() {loading=true;});
+    await http.post('https://newshunt.io/mobile/newsHunt_login.php',body: {'username':email,'password':password})
         .then((response){
       String body = response.body;
 
@@ -225,6 +243,7 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
     }).catchError((error){print('Error');});
   }
  _facebook_login() async{
+    setState(() {loading=true;});
     print('facebbbbbbbbb');
     var facebook=FacebookLogin();
     var facebookLoginResult=await facebook.logInWithReadPermissions(['email']);
@@ -235,9 +254,9 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
         final fbResponse = await http.get(
             'https://graph.facebook.com/v2.12/me?fields=first_name,last_name,email&access_token=${token}');
         var fbData=json.decode(fbResponse.body);
-        print(fbData);
-        http.post('',
-            headers: {'content-type': 'application/json'},body: fbData)
+        print(fbResponse.body);
+        http.post('https://newshunt.io/mobile/fb_login.php',
+            headers: {'content-type': 'application/json'},body: fbResponse.body)
             .then((response){
               if(response.body.contains('success')){
                 _sharedPreferences(fbData['id'], 'facebook', fbData['first_name'], fbData['last_name']);
@@ -254,9 +273,8 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
     }
  }
   _forget_request(var email){
-    http.post('',body: {'':email}).then((response){
-      Toast.show('Your Account Is Not Activated Yet, Check Your Email !', context);
-
+    http.post('',body: {'email':email}).then((response){
+      Toast.show('Check Your Email !', context);
     });
   }
 }
