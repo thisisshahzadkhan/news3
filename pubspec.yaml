@@ -30,6 +30,7 @@ dependencies:
   toast: 0.1.5
   flutter_facebook_login: 2.0.1
   flutter_launcher_icons: ^0.7.2+1
+  url_launcher: 5.1.2
 
 dev_dependencies:
   flutter_test:

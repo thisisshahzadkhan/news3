@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:toast/toast.dart';
 import 'filter_list.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/animation.dart';
 import 'package:share/share.dart';
@@ -149,14 +151,10 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
               }
             });
           },
-          //FUTURE BUILDER
+          ///////////FUTURE BUILDER
                   child:Container(
-                      color: Colors.white,
-                      child:Container(
-                        child: Container(
-                          child: Center(
-                            child: Container(
-                              child: FutureBuilder(
+                    color: Colors.white,
+                    child: FutureBuilder(
                 future: _news_data(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   while (snapshot.data == null||snapshot.hasError) {
@@ -177,6 +175,9 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                     widget.hot_array.add(int.parse(snapshot.data[widget.Index].hots));
                     //////////////////////check category
                     check_category(snapshot.data[widget.Index].category.toString());
+
+
+
      ////////////////////////////////////////////////////////////////////////Main SCREEN
                     return CustomScrollView(
                       slivers: <Widget>[
@@ -274,8 +275,22 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                           Padding(
                             padding: EdgeInsets.fromLTRB(
                                 8.0, 10.0, 8.0, 10.0),
-                                child: Html(data:snapshot.data[widget.Index].body.toString()),
+                                child: Text(snapshot.data[widget.Index].body.toString(),style: TextStyle(fontFamily: 'Montserrat')),
                           ),
+                          SizedBox(height: 15,),
+                          ///////////////URI
+                          Container(
+                            height: 40.0,
+                            padding: EdgeInsets.fromLTRB(
+                                8.0, 10.0, 8.0, 10.0),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black, style: BorderStyle.solid, width: 1.0), color: Colors.transparent, borderRadius: BorderRadius.circular(20.0)),
+                            child:MaterialButton(
+                              onPressed:(){_launchUrl(snapshot.data[widget.Index].url);},
+                              child: Text('Read more from the source', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),),
+                            ),
+                          ),
+                          SizedBox(height: 50.0),
 
                         ])),
                       ],
@@ -283,10 +298,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                   }
                 },
               ),
-                            ),
-                          ),
-                        ),
-                      )),
+      ),
                   /*));}
           )*/
       ),
@@ -358,6 +370,17 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
     }).catchError((error) => print(error.toString()));
   }
 
+///////url launch
+  _launchUrl(var url)async{
+/*
+    if (await canLaunch(url)){
+      await launch(url);
+    }
+    else Toast.show("Error in launching the link", context);
+*/
+  Toast.show("under construction", context);
+
+  }
 
 
   //FUTURE / ASYNC DATA CALL
@@ -374,7 +397,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
      var json_data=json.decode(data.body);
      List<news_data> news_data_list=[];
      for (var n in json_data){
-        news_data data=news_data(n["id"],n['title'], n['body'],n['media'],n['url'],n['pub_date'],
+        news_data data=news_data(n["id"],n['title'], n['description'],n['media'],n['url'],n['pub_date'],
             n['source'],n['category'],n['hots'],n['colds'],n['archieves']);
         news_data_list.add(data);
      }
@@ -389,6 +412,8 @@ class news_data {
        this.source, this.category,this.hots,this.colds,this.archives);
 
 }
+
+
 
 
 //clipper
