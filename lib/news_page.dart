@@ -372,13 +372,10 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
 
 ///////url launch
   _launchUrl(var url)async{
-/*
     if (await canLaunch(url)){
       await launch(url);
     }
     else Toast.show("Error in launching the link", context);
-*/
-  Toast.show("under construction", context);
 
   }
 
