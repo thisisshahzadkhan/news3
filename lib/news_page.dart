@@ -4,9 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:toast/toast.dart';
 import 'filter_list.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:get_ip/get_ip.dart';
+//import 'package:get_ip/get_ip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/animation.dart';
 import 'package:share/share.dart';
@@ -209,7 +208,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Column(
+                              /*Column(
                                 children: <Widget>[
                                   IconButton(icon: Image.asset('assets/hot.png'),
                                     onPressed: () {setState(() {
@@ -227,7 +226,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                                   });
                                   _cold_async(snapshot.data[widget.Index].id,widget.Index);}, iconSize: 50,),
                                 Text(widget.cold_array[widget.Index].toString(),style: TextStyle(fontFamily: 'Montserrat'))
-                              ],),
+                              ],),*/
                               ///////////////////////archives
                               Column(children: <Widget>[
                                 IconButton(icon: Image.asset((snapshot.data[widget.Index].archives==null||snapshot.data[widget.Index].archives=='0')?widget.archivesUnseticon:widget.archivesicon),
