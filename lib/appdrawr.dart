@@ -14,7 +14,7 @@ class appdrawr_state extends State<appdrawr>{
       child: ListView(
         children: <Widget>[
           ///header
-          DrawerHeader(child: Image.asset('assets/icon.png',),decoration:BoxDecoration(color: Colors.grey),padding: EdgeInsets.only(top: 30),),
+          DrawerHeader(child: Image.asset('assets/icon2.png',),decoration:BoxDecoration(color: Colors.blueGrey),padding: EdgeInsets.only(top: 30),),
           ///////////signin // signup
           ListTile(title: Text((auth.login)?auth.name:'Sign In / Sign Up',textAlign: TextAlign.center,style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),textScaleFactor: 1.5,),
             onTap: (){auth.login?{}:Navigator.pushNamed(context, '/login');},),
