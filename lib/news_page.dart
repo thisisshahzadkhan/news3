@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:toast/toast.dart';
 import 'filter_list.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:get_ip/get_ip.dart';
+//import 'package:get_ip/get_ip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/animation.dart';
 import 'package:share/share.dart';
@@ -331,7 +331,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
         box.size);
   }
 
-  //////////////////////////////////COLDs
+ /* //////////////////////////////////COLDs
   _cold_async(var id,var index)async{
     String ipAddress = await GetIp.ipAddress;
     print(ipAddress);
@@ -371,7 +371,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
       print("Response body: ${response.body}");
     }).catchError((error) => print(error.toString()));
   }
-
+*/
 ///////url launch
   _launchUrl(var url)async{
     if (await canLaunch(url)){
