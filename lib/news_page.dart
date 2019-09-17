@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:toast/toast.dart';
 import 'filter_list.dart';
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:get_ip/get_ip.dart';
+import 'package:get_ip/get_ip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/animation.dart';
 import 'package:share/share.dart';
@@ -332,7 +332,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
   }
 
   //////////////////////////////////COLDs
-  /*_cold_async(var id,var index)async{
+  _cold_async(var id,var index)async{
     String ipAddress = await GetIp.ipAddress;
     print(ipAddress);
     await http.post('https://newshunt.io/mobile/insert_colds.php', body:{'news_id':id,'ip':ipAddress})
@@ -370,7 +370,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
       print("Response status: ${response.statusCode}");
       print("Response body: ${response.body}");
     }).catchError((error) => print(error.toString()));
-  }*/
+  }
 
 ///////url launch
   _launchUrl(var url)async{
