@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       title: 'News Hunt',
+      debugShowCheckedModeBanner: false,
       theme: new ThemeData(
         primarySwatch:Colors.blue,
       ),
@@ -32,4 +33,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

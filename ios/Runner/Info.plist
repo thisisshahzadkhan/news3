@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>NewsHunt</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -18,10 +20,37 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb2448965981854875</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>2448965981854875</string>
+	<key>FacebookDisplayName</key>
+	<string>phonesignin</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+	<key>UIActivityViewController</key>
+	<string>NSUserDefaults</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,43 +70,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-    <key>NSAppTransportSecurity</key>
-        <dict>
-          <key>NSAllowsArbitraryLoads</key>
-          <true/>
-        </dict>
-        <key>UIActivityViewController</key>
-        <key>NSUserDefaults</key>
-
-        <key>CFBundleURLTypes</key>
-        <array>
-            <dict>
-                <key>CFBundleURLSchemes</key>
-                <array>
-                    <!--
-                      Replace "000000000000" with your Facebook App ID here.
-                      **NOTE**: The scheme needs to start with `fb` and then your ID.
-                    -->
-                    <string>fb2448965981854875</string>
-                </array>
-            </dict>
-        </array>
-
-        <key>FacebookAppID</key>
-
-        <!-- Replace "000000000000" with your Facebook App ID here. -->
-        <string>2448965981854875</string>
-        <key>FacebookDisplayName</key>
-
-        <!-- Replace "YOUR_APP_NAME" with your Facebook App name. -->
-        <string>phonesignin</string>
-
-        <key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>fbapi</string>
-            <string>fb-messenger-share-api</string>
-            <string>fbauth2</string>
-            <string>fbshareextension</string>
-        </array>
 </dict>
 </plist>
