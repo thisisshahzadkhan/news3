@@ -5,12 +5,14 @@ import 'dart:convert';
 import 'package:toast/toast.dart';
 import 'filter_list.dart';
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:get_ip/get_ip.dart';
+import 'package:get_ip/get_ip.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/animation.dart';
 import 'package:share/share.dart';
 import 'language.dart';
 import 'auth.dart';
+import 'package:flutter_html/flutter_html.dart';
+
 
 class news_page extends StatefulWidget{
   var x;
@@ -36,6 +38,7 @@ class news_page extends StatefulWidget{
 class news extends State<news_page> with SingleTickerProviderStateMixin{
   Animation animation;
   AnimationController animationControler;
+  bool readMore=true;
 
   //NEWS SOURCE CHECKING FOR NEWS LOGO
   check_source(String str){
@@ -137,13 +140,13 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
               widget.coldicon='assets/uncold.png';
               widget.hoticon='assets/unhot.png';
               if (d.primaryVelocity >= 1) {
-                if (widget.Index > 0) {widget.Index--;}
+                if (widget.Index > 0) {widget.Index--;readMore=true;}
                 else{
                   Toast.show("You are already viewing the latest news!", context);
                 }
               }
               else if (d.primaryVelocity <= -1) {
-                if (widget.Index < limit) {widget.Index++;}
+                if (widget.Index < limit) {widget.Index++;readMore=true;}
                 else{
                   Toast.show("No more news available for now!", context);
                 }
@@ -168,6 +171,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                     }
                     limit=snapshot.data.length-1;
                     print(limit);
+
                     //////////////////CHECKING SOURCE and SETTING LOGO
                     check_source(snapshot.data[widget.Index].source.toString());
                     widget.cold_array.add(int.parse(snapshot.data[widget.Index].colds));
@@ -226,8 +230,8 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                                   });
                                   _cold_async(snapshot.data[widget.Index].id,widget.Index);}, iconSize: 50,),
                                 Text(widget.cold_array[widget.Index].toString(),style: TextStyle(fontFamily: 'Montserrat'))
-                              ],),*/
-                              ///////////////////////archives
+                              ],),
+                              *////////////////////////archives
                               Column(children: <Widget>[
                                 IconButton(icon: Image.asset((snapshot.data[widget.Index].archives==null||snapshot.data[widget.Index].archives=='0')?widget.archivesUnseticon:widget.archivesicon),
                                   onPressed:(){_archive(snapshot.data[widget.Index].id);} , iconSize: 50,),
@@ -271,26 +275,39 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                           ///////test
                           //HtmlView(data: snapshot.data[widget.Index].body,),
                           //////////BODY
-                          Padding(
+                          Visibility(
+                              visible: readMore,
+                              child:Padding(
                             padding: EdgeInsets.fromLTRB(
                                 8.0, 10.0, 8.0, 10.0),
-                                child: Text(snapshot.data[widget.Index].body.toString(),style: TextStyle(fontFamily: 'Montserrat')),
-                          ),
+                                child: Text(snapshot.data[widget.Index].description.toString(),style: TextStyle(fontFamily: 'Montserrat')),
+                          )),
                           SizedBox(height: 15,),
-                          ///////////////URI
-                          Container(
+                          ///////////////URL
+                          Visibility(
+                              visible: readMore,
+                              child:Container(
                             height: 40.0,
                             padding: EdgeInsets.fromLTRB(
                                 8.0, 10.0, 8.0, 10.0),
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.black, style: BorderStyle.solid, width: 1.0), color: Colors.transparent, borderRadius: BorderRadius.circular(20.0)),
                             child:MaterialButton(
-                              onPressed:(){_launchUrl(snapshot.data[widget.Index].url);},
-                              child: Text('Read more from the source', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),),
+                              onPressed:(){setState(() {
+                                readMore=!readMore;
+                              });},
+                              child: Text('Read more', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontFamily: 'Montserrat'),),
                             ),
-                          ),
-                          SizedBox(height: 50.0),
+                          )),
 
+                          //Body Text
+                          Visibility(visible: !readMore,
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(
+                                8.0, 10.0, 8.0, 10.0),
+                            child: Html(data: snapshot.data[widget.Index].body,),
+                          ),),
+                          SizedBox(height: 50.0),
                         ])),
                       ],
                     );
@@ -298,8 +315,6 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                 },
               ),
       ),
-                  /*));}
-          )*/
       ),
     );
 
@@ -331,7 +346,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
         box.size);
   }
 
- /* //////////////////////////////////COLDs
+  //////////////////////////////////COLDs
   _cold_async(var id,var index)async{
     String ipAddress = await GetIp.ipAddress;
     print(ipAddress);
@@ -371,7 +386,6 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
       print("Response body: ${response.body}");
     }).catchError((error) => print(error.toString()));
   }
-*/
 ///////url launch
   _launchUrl(var url)async{
     if (await canLaunch(url)){
@@ -396,7 +410,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
      var json_data=json.decode(data.body);
      List<news_data> news_data_list=[];
      for (var n in json_data){
-        news_data data=news_data(n["id"],n['title'], n['description'],n['media'],n['url'],n['pub_date'],
+        news_data data=news_data(n["id"],n['title'], n['description'],n['body'],n['media'],n['url'],n['pub_date'],
             n['source'],n['category'],n['hots'],n['colds'],n['archieves']);
         news_data_list.add(data);
      }
@@ -406,8 +420,8 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
 }
 // DAta Templet
 class news_data {
-  var id, title, body, media, url, pub_date, source, category,hots,colds,archives;
-  news_data(this.id, this.title,this.body,this.media, this.url, this.pub_date,
+  var id, title,description, body, media, url, pub_date, source, category,hots,colds,archives;
+  news_data(this.id, this.title, this.description,this.body,this.media, this.url, this.pub_date,
        this.source, this.category,this.hots,this.colds,this.archives);
 
 }

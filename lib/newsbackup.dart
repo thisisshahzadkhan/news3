@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:toast/toast.dart';
 import 'filter_list.dart';
-import 'package:flutter_html/flutter_html.dart';
+//import 'package:flutter_html/flutter_html.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/animation.dart';
 import 'package:share/share.dart';
@@ -275,7 +275,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                                 Padding(
                                   padding: EdgeInsets.fromLTRB(
                                       8.0, 10.0, 8.0, 10.0),
-                                  child: Html(data:snapshot.data[widget.Index].body.toString()),
+                                  //child: Html(data:snapshot.data[widget.Index].body.toString()),
                                 ),
 
                               ])),
