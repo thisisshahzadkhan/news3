@@ -6,7 +6,7 @@ import 'archives.dart';
 import 'search.dart';
 import 'signup.dart';
 import 'filter.dart';
-
+import 'news_source_page.dart';
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
     '/archives': (context)=>(archives()),
     '/search': (context)=>(search()),
     '/filter': (context)=>(filter()),
+    '/news_source_page':(context)=>(news_source_page())
   };
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       title: 'News Hunt',
       debugShowCheckedModeBanner: false,
       theme: new ThemeData(
+        fontFamily: 'SF Pro',
         primarySwatch:Colors.blue,
       ),
       home: home(),

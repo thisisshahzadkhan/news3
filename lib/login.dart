@@ -25,8 +25,10 @@ class loginState extends State<mylogin>with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
     backgroundColor: Colors.white,
-    body: Stack(children: <Widget>[Container(
+    body: Stack(children: <Widget>[
+      Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
