@@ -340,7 +340,7 @@ class news extends State<news_page> with SingleTickerProviderStateMixin{
                   SingleChildScrollView(child: Padding(
                     padding: EdgeInsets.fromLTRB(
                         8.0, 5.0, 8.0, 0.0),
-                    child: Text(snapshot.data[widget.Index].summary.toString(),style: TextStyle(fontFamily: 'Montserrat')),
+                    child: Text(snapshot.data[widget.Index].summary.toString().substring(0,200)+"...",style: TextStyle(fontFamily: 'Montserrat')),
                   ),),
 
                       ],);
